@@ -1,0 +1,18 @@
+{
+    "0":"Under way using its engine",
+    "1":"Anchored",
+    "2":"Not under command",
+    "3":"Has restricted maneuverability",
+    "4":"Ship draught is limiting its movement",
+    "5":"Moored (tied to another object to limit free movement)",
+    "6":"Aground",
+    "7":"Engaged in fishing",
+    "8":"Under way sailing",
+    "9":"(Number reserved for modifying reported status of ships carrying dangerous goods/harmful substances/marine pollutants)",
+    "10":"(Number reserved for modifying reported status of ships carrying dangerous goods/harmful substances/marine pollutants)",
+    "11":"Power-driven vessel towing astern",
+    "12":"Power-driven vessel pushing ahead/towing alongside",
+    "13":"(Reserved for future use)",
+    "14":"Any of the following are active: AIS-SART (Search and Rescue Transmitter), AIS-MOB (Man Overboard), AIS-EPIRB (Emergency Position Indicating Radio Beacon)",
+    "15":"Undefined (default)"
+}
