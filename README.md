@@ -5,4 +5,4 @@ AIS shipping data record the location of all ships, all-day, every-day, globally
 - Identify popular shipping routes, broken down by date and ship type.
 - Identify imtermediate ports that serve as waypoints on longer routes.
 
-![Waterways example in China][https://github.com/worldbank/GOST_AIS/images/EAP_ShippingDensity_SHANGHAI.png]
+![Waterways example in China](https://github.com/worldbank/GOST_AIS/blob/master/images/EAP_ShippingDensity_SHANGHAI.png)
