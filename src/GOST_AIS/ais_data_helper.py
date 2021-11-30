@@ -9,11 +9,13 @@ from centerline.geometry import Centerline
 
 json_folder = os.path.dirname(__file__)
 
-class ais_file(object):
+class ais_helper(object):
     """ Define and process an ais_file
     """
     
-    def __init__(self, ais_file):
+    def __init__(self, inD=None, ais_file=None):
+        ''' Create an ais object from a csv file of locations
+        '''
         self.ais_file = ais_file
         with open(os.path.join(json_folder, "ship_statuses.json"), 'r') as json_file:
             self.ship_status = json.load(json_file)
@@ -29,24 +31,37 @@ class ais_file(object):
                 xx[i] = key
         self.ship_types = xx
         
-    def read_simple_geom(self, convert_cols=True, good_cols = ['latitude','longitude','timestamp','mmsi','ship_and_cargo_type','status']):
-        ''' Read in the ais file, convert to geopandas dataframe
+        #Read in and process input data
+        if ais_file:
+            self.inD = pd.read_csv(self.ais_file)
+        if not inD is None:
+            self.inD = inD
         
+    def read_simple_geom(self, inD='', clean_data=True, convert_cols=True, good_cols = ['latitude','longitude','timestamp','mmsi','ship_and_cargo_type','status']):
+        ''' Read in the ais file, convert to geopandas dataframe
+
         Args:
+            inD (pandas dataframe, optional): input dataframe of AIS locations. One of inD or ais_file must be defined
+            ais_file (file path, optional): path to csv file of AIS locations. One of inD or ais_file must be defined
             convert_cols (boolean, optional): option to convert columns ship_and_cargo_type and status to text, defaults to True
             good_cols(list of strings, optional): columns to keep when returning results
-            
+
         Returns:
             geopandas GeoDataFrame: ais_file cleaned according to arguments.
         '''
-        
-        inD = pd.read_csv(self.ais_file)
-        self.rawD = inD
+        self.rawD = self.inD
+        if inD == '':
+            inD = self.inD
         inD = inD.loc[:,good_cols]
+        #Remove bad data
+        if clean_data:
+            inD = inD[inD['latitude'].notnull() & inD['longitude'].notnull()]
+            
+        #Convert categorical columns to text
         if convert_cols:
             inD['ship_type'] = inD['ship_and_cargo_type'].replace(self.ship_types)
             inD['status_name'] = inD['status'].replace(self.ship_status)
-            
+
         inD_geom = [Point(x.longitude, x.latitude) for idx, x in inD.iterrows()]
         inD = gpd.GeoDataFrame(inD, geometry=inD_geom, crs="epsg:4326")
         self.gdf = inD
